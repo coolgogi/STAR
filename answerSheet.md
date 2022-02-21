@@ -3,9 +3,17 @@
 + __fread()__ : <http://www.cplusplus.com/reference/cstdio/fread/>  
 + __fwrite()__ : <http://www.cplusplus.com/reference/cstdio/fwrite/>  
 + What's the other file interfaces that read and write a file as text?
-```markdown
-
+```C
+size_t fread (const void *ptr, size_t size, size_t count, FILE *stream);
+size_t fwrite (const void *ptr, size_t size, size_t count, FILE *stream);
+ssize_t read (int fd, void *buf, size_t count);
+ssize_t write (int fd, const void *buf, size_t count);
+char * fgetc (FILE *stream);
+int fputc (int c, FILE *stream);
+char * fgets (char *restrict s, int size, FILE *restrict stream);
+int fputs (const char *restrict s, FILE *restrict stream);
 ```
+
 + How accessing a file as binary is defferent from accessing it as text?  
 ```markdown
 
