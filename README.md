@@ -34,7 +34,7 @@ Read each of the given C library reference pages and solve the associated proble
 + How one can find the size of a file?    
 
 ## Command-line Interface
-(1) Archive mode: produce a new file <\archive-file-name>\ that aggregates all regular files in <\target directory path>\  
+(1) Archive mode: produce a new file \<archive-file-name\> that aggregates all regular files in \<target directory path\>  
 ```bash
 star archive <archive-file-name> <target directory path>  
 ```
