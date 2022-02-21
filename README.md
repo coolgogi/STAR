@@ -21,7 +21,7 @@ Read each of the given C library reference pages and solve the associated proble
 ### (2) Accessing a directory
 + Opening a directory  <https://www.gnu.org/software/libc/manual/html_node/Opening-a-Directory.html>
 + Reading a directroy  <https://www.gnu.org/software/libc/manual/html_node/Reading_002fClosing-Directory.html>  
-+ Simple directory lister  <https://www.gnu.org/software/libc/manual/html_node/Simple-Directory-List.html>  
++ Simple directory lister  <https://www.gnu.org/software/libc/manual/html_node/Simple-Directory-Lister.html>  
 + What is the _path_ of a file? How it is different from the _name_ of a file?  
 + Write a program that enumerates the paths of all files under a given directory and its subdirectories recursively.  
 + Write a program that copies the entire files and the directory structure of a given path to another specified path.  
