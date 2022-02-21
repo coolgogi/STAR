@@ -21,14 +21,34 @@ But accessing a file as text reads data from file per characters or strings.
 size_t
 read_file (FILE * file) {
 
-    
+    long lSize;
+    char * buffer;
+    size_t result;
 
-    do {
-        
+    fseek(file, 0, SEEK_END);
+    lSize = ftell(file);
+    rewind(file);
 
-
+    buffer = (char *) malloc (sizeof(char) * lSize);
+    if (buffer == NULL) {
+        fputs("Memory error", stderr);
+        exit(2);
     }
-    while () ;
+
+    result = fread(buffer, 1, lSize, file);
+    if (result != lSize) {
+        fputs("Reading error", stderr);
+        exit(3);
+    }
+
+    for (int i = 0 ; i < lSize ; i ++ ) {
+        printf("%x ", (int) buffer[i]);
+        if (i % 50 == 0) {
+            printf("\n");
+        }
+    }
+    free(buffer);
+    return lSize;
 }
 ```
 
