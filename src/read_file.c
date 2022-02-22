@@ -22,10 +22,14 @@ read_file (FILE * file) {
     }
 
     for (int i = 0 ; i < lSize ; i ++ ) {
-        printf("%x ", (unsigned char) buffer[i]);
-        if (i % 25 == 0) {
+        printf("%x", (unsigned char) buffer[i]);
+        if (i % 2 == 0) {
+            printf(" ");
+        }
+        if (i % 16 == 0) {
             printf("\n");
         }
+        
     }
     free(buffer);
     return 0;
