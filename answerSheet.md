@@ -9,6 +9,7 @@ int fputc (int c, FILE *stream);
 char * fgets (char *restrict s, int size, FILE *restrict stream);
 int fputs (const char *restrict s, FILE *restrict stream);
 int fscanf (FILE *restrict stream, const char *restrict format, ...);
+int fprintf (FILE *restrict stream, const char *restrict format, ...);
 ```
 
 + How accessing a file as binary is defferent from accessing it as text?  
@@ -58,7 +59,7 @@ read_file (FILE * file) {
 + Simple directory lister  <https://www.gnu.org/software/libc/manual/html_node/Simple-Directory-Lister.html>  
 + What is the _path_ of a file? How it is different from the _name_ of a file?  
 ```markdown
-path is position of the file,(absolutely, relatively) but name is like some kind of variable name?...
+path is position of the file,(absolutely, relatively) but name is definition in directory.
 ```
 + Write a program that enumerates the paths of all files under a given directory and its subdirectories recursively.  
 ```C
@@ -95,7 +96,7 @@ read_dirlist (char * path, int depth) {
         (void) closedir (dp);
     }
     else {
-        // perror ("Couldn't open the directory");
+        perror ("Couldn't open the directory");
     }
     return 0;
 }
