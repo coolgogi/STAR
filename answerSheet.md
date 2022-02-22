@@ -18,7 +18,7 @@ But accessing a file as text reads data from file per characters or strings.
 ```
 + Write a program that shows each byte of a given file as a hexadecimal number (like xxd does)  
 ```C
-size_t
+int
 read_file (FILE * file) {
 
     long lSize;
@@ -32,13 +32,13 @@ read_file (FILE * file) {
     buffer = (char *) malloc (sizeof(char) * lSize);
     if (buffer == NULL) {
         fputs("Memory error", stderr);
-        exit(2);
+        return 2;
     }
 
     result = fread(buffer, 1, lSize, file);
     if (result != lSize) {
         fputs("Reading error", stderr);
-        exit(3);
+        return 3;
     }
 
     for (int i = 0 ; i < lSize ; i ++ ) {
@@ -48,7 +48,7 @@ read_file (FILE * file) {
         }
     }
     free(buffer);
-    return lSize;
+    return 0;
 }
 ```
 
