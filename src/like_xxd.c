@@ -8,8 +8,11 @@ int main () {
   char * buffer;
   size_t result;
 
-  pFile = fopen ( "./DIY-fuzzer/bin/main" , "rb" );
-  if (pFile==NULL) {fputs ("File error",stderr); exit (1);}
+  pFile = fopen ( "../bin/xxd" , "rb" );
+  if (pFile == NULL) {
+    fputs ("File error",stderr); 
+    exit (1);
+  }
 
   // obtain file size:
   fseek (pFile , 0 , SEEK_END);
@@ -17,21 +20,30 @@ int main () {
   rewind (pFile);
 
   // allocate memory to contain the whole file:
-  buffer = (char*) malloc (sizeof(char)*lSize);
-  if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
+  buffer = (char * ) malloc (sizeof(char)*lSize);
+  if (buffer == NULL) {
+    fputs ("Memory error",stderr); 
+    exit (2);
+  }
 
   // copy the file into the buffer:
   result = fread (buffer,1,lSize,pFile);
-  if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
-	
+  if (result != lSize) {
+    fputs ("Reading error",stderr); 
+    exit (3);
+  }
+
   /* the whole file is now loaded in the memory buffer. */
 
   for (int i = 0 ; i < lSize ; i ++) {
-  		printf("%x ", (unsigned char) buffer[i]);
-		if (i % 25 == 0) {
-			printf("\n");
-		}
-	}
+    printf("%02hhX", (unsigned char) buffer[i]);
+    if (i % 16 == 0) {
+      printf("\n");
+    }
+    if (i % 2 == 0) {
+      printf(" ");
+    }
+  }
   // terminate
   fclose (pFile);
   free (buffer);
