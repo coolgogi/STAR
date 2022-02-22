@@ -42,8 +42,8 @@ read_file (FILE * file) {
     }
 
     for (int i = 0 ; i < lSize ; i ++ ) {
-        printf("%x ", (int) buffer[i]);
-        if (i % 50 == 0) {
+        printf("%x ", (unsigned char) buffer[i]);
+        if (i % 25 == 0) {
             printf("\n");
         }
     }
