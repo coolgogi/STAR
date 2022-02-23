@@ -1,36 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
 int
 read_file (FILE * file) {
 
-    long lSize;
-    char * buffer;
-    size_t result;
+    unsigned char buf[2] ;
+    
+    for (int i = 0 ; fread(buf, 2, 1, file) == 1 ; i ++) {
+        
+        printf("%02x%02x ", buf[0],buf[1]);
 
-    fseek(file, 0, SEEK_END);
-    lSize = ftell(file);
-    rewind(file);
-
-    buffer = (char *) malloc (sizeof(char) * lSize);
-    if (buffer == NULL) {
-        fputs("Memory error", stderr);
-        return 2;
-    }
-
-    result = fread(buffer, 1, lSize, file);
-    if (result != lSize) {
-        fputs("Reading error", stderr);
-        return 3;
-    }
-
-    for (int i = 0 ; i < lSize ; i ++ ) {
-        printf("%x", (unsigned char) buffer[i]);
-        if (i % 2 == 0) {
-            printf(" ");
-        }
-        if (i % 16 == 0) {
+        if (i % 8 == 0) {
             printf("\n");
         }
-        
     }
-    free(buffer);
+    
+    return 0 ;
+}
+
+
+int
+main (int argc, char * argv[]) {
+    if (argc != 2) {
+        printf("invalid argument\n");
+    }
+
+    FILE * fp ;
+    fp = fopen(argv[1], "r");
+    read_file(fp);
+    fclose(fp);
+
     return 0;
+
 }

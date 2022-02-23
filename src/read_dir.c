@@ -4,48 +4,50 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 int
-read_dirlist (char * path, int depth) {
+read_dir (char * path, int depth) {
     
-    DIR *dp;
-    struct dirent *ep;
+    DIR * dp ;
+    struct dirent * ep;
 
-    dp = opendir (path);
-    int _depth = depth + 1;
+    dp = opendir(path);
+    
+    if (dp == NULL) {
+        return 0;
+    }
+    else {
 
-    if (dp != NULL) {
-        while (ep = readdir (dp)) {
+        while (ep = readdir(dp)) {
+            if (strcmp(ep->d_name, ".") == 0) {
+            }
+            else if (strcmp(ep->d_name, "..") == 0) {
+            }
+            else {
+                printf("%s%s\n", path, ep->d_name);
 
-            printf("%s%s\n",path,ep->d_name);
-            if (ep->d_type == 4) {
-                
-                if (strcmp(ep->d_name,".") == 0) {
-                } 
-                else if (strcmp(ep->d_name,"..") == 0) {
-                }
-                else {
-                    char * _path = (char *) malloc (sizeof(char) * 256 *_depth);
+                if (ep->d_type == DT_DIR) {
+                    char * _path = (char *) malloc (sizeof(char) * 256 * (depth + 1));
                     strcpy(_path, path);
                     strcat(_path, ep->d_name);
                     strcat(_path, "/");
-                    read_dirlist(_path,_depth);
+                    read_dir(_path, depth+1);
+                    free(_path);
                 }
-                
             }
         }
-
-        (void) closedir (dp);
+        return 0;
     }
-    else {
-        // perror ("Couldn't open the directory");
-    }
-    return 0;
 }
 
 int
 main (int argc, char * argv[]) {
     
-    read_dirlist("./", 0);
+    if (argc != 2) {
+        perror("invalid input");
+    }
+
+    read_dir(argv[1], 0);
     return 0;
 
 }
