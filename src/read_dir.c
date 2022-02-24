@@ -9,44 +9,45 @@
 int
 read_dir (char * path) {
     
-    DIR * dp ;
-    struct dirent * ep;
+    DIR * dir;
+    struct dirent * dir_info;
 
-    dp = opendir(path);
+    dir = opendir(path);
     
-    if (dp == NULL) {
+    if (dir == NULL) {
         perror("opendir returned NULL");
-        return errno;
+        exit(errno);
     }
     else {
 
-        while (ep = readdir(dp)) {
+        while (dir_info = readdir(dir)) {
 
-            if (strcmp(ep->d_name, ".") == 0) {
+            if (strcmp(dir_info->d_name, ".") == 0) {
                 continue;
             }
-            else if (strcmp(ep->d_name, "..") == 0) {
+            else if (strcmp(dir_info->d_name, "..") == 0) {
                 continue;
             }
-            else if (strcmp(ep->d_name, ".DS_Store") == 0) {
+            else if (strcmp(dir_info->d_name, ".DS_Store") == 0) {
                 continue;
             }
             else {
 
-                printf("%s%s\n", path, ep->d_name);
+                printf("%s%s\n", path, dir_info->d_name);
 
-                if (ep->d_type == DT_DIR) {
-                    char * _path = (char *) malloc (sizeof(char) * PATH_MAX);
-                    strcpy(_path, path);
-                    strcat(_path, ep->d_name);
-                    strcat(_path, "/");
+                if (dir_info->d_type == DT_DIR) {
+                    char * child_path = (char *) malloc(sizeof(char) * PATH_MAX);
+                    strcpy(child_path, path);
+                    strcat(child_path, dir_info->d_name);
+                    strcat(child_path, "/");
                     
-                    read_dir(_path);
+                    read_dir(child_path);
                     
-                    free(_path);
+                    free(child_path);
                 }
             }
         }
+        closedir(dir);
         return 0;
     }
 }

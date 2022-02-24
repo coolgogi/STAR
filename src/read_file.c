@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int
-ReadByte (FILE * file) {
+ReadByteAndPrintHexa (FILE * file) {
 
     unsigned char buf ;
     for (int i = 1 ; fread(&buf, 1, 1, file) == 1 ; i ++) {
@@ -23,9 +23,9 @@ main (int argc, char * argv[]) {
         printf("invalid argument\n");
     }
 
-    FILE * fp ;
+    FILE * fp;
     fp = fopen(argv[1], "r");
-    ReadByte(fp);
+    ReadByteAndPrintHexa(fp);
     fclose(fp);
 
     return 0;
