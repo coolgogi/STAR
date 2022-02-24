@@ -5,15 +5,20 @@
 int
 read_file (FILE * file) {
 
-    unsigned char buf[2] ;
+    unsigned char buf ;
     
-    for (int i = 0 ; fread(buf, 2, 1, file) == 1 ; i ++) {
+    for (int i = 0 ; fread(buf, 1, 1, file) == 1 ; i ++) {
         
-        printf("%02x%02x ", buf[0],buf[1]);
+        printf("%02x", buf);
 
-        if (i % 8 == 0) {
-            printf("\n");
+        
+        if ((i != 0) && (i % 2 == 0)) {
+            printf(" ");
         }
+        if (i & 16 == 0) {
+            printf("%x: ", i);
+        }
+
     }
     
     return 0 ;

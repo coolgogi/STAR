@@ -3,10 +3,11 @@
 #include <dirent.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <limits.h>
+#include <errno.h>
 
 int
-read_dir (char * path, int depth) {
+read_dir (char * path) {
     
     DIR * dp ;
     struct dirent * ep;
@@ -14,25 +15,24 @@ read_dir (char * path, int depth) {
     dp = opendir(path);
     
     if (dp == NULL) {
-        return 0;
+        return errno;
     }
     else {
 
         while (ep = readdir(dp)) {
-            if (strcmp(ep->d_name, ".") == 0) {
-            }
-            else if (strcmp(ep->d_name, "..") == 0) {
+
+            if (ep->d_name[0] == '.') {
             }
             else {
                 printf("%s%s\n", path, ep->d_name);
 
                 if (ep->d_type == DT_DIR) {
-                    char * _path = (char *) malloc (sizeof(char) * 256 * (depth + 1));
+                    char * _path = (char *) malloc (sizeof(char) * PATH_MAX);
                     strcpy(_path, path);
                     strcat(_path, ep->d_name);
                     strcat(_path, "/");
-                    read_dir(_path, depth+1);
-                    free(_path);
+                    read_dir(_path);
+
                 }
             }
         }
@@ -44,10 +44,12 @@ int
 main (int argc, char * argv[]) {
     
     if (argc != 2) {
-        perror("invalid input");
+        fprintf(stderr, "invalid input");
+        return 0;
     }
 
-    read_dir(argv[1], 0);
+    read_dir(argv[1]);
+    
     return 0;
 
 }
