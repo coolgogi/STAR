@@ -22,9 +22,17 @@ read_dir (char * path) {
 
         while (ep = readdir(dp)) {
 
-            if (ep->d_name[0] == '.') {
+            if (strcmp(ep->d_name, ".") == 0) {
+                continue;
+            }
+            else if (strcmp(ep->d_name, "..") == 0) {
+                continue;
+            }
+            else if (strcmp(ep->d_name, ".DS_Store") == 0) {
+                continue;
             }
             else {
+
                 printf("%s%s\n", path, ep->d_name);
 
                 if (ep->d_type == DT_DIR) {
@@ -32,8 +40,10 @@ read_dir (char * path) {
                     strcpy(_path, path);
                     strcat(_path, ep->d_name);
                     strcat(_path, "/");
+                    
                     read_dir(_path);
-
+                    
+                    free(_path);
                 }
             }
         }

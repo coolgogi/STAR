@@ -1,9 +1,9 @@
 all:
 
-dir:
+file:
 	gcc ./src/read_file.c -o ./bin/read_file
 	
-file:
+dir:
 	gcc ./src/read_dir.c -o ./bin/read_dir
 
 copy:
