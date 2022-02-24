@@ -1,26 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 int
-read_file (FILE * file) {
+ReadByte (FILE * file) {
 
     unsigned char buf ;
-    
-    for (int i = 0 ; fread(buf, 1, 1, file) == 1 ; i ++) {
-        
+    for (int i = 1 ; fread(&buf, 1, 1, file) == 1 ; i ++) {
+
         printf("%02x", buf);
-
-        
-        if ((i != 0) && (i % 2 == 0)) {
-            printf(" ");
+        if ((i != 1) && (i % 30 == 0)) {
+            printf("\n");
         }
-        if (i & 16 == 0) {
-            printf("%x: ", i);
-        }
-
     }
-    
+    printf("\n");
     return 0 ;
 }
 
@@ -33,7 +25,7 @@ main (int argc, char * argv[]) {
 
     FILE * fp ;
     fp = fopen(argv[1], "r");
-    read_file(fp);
+    ReadByte(fp);
     fclose(fp);
 
     return 0;

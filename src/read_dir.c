@@ -15,6 +15,7 @@ read_dir (char * path) {
     dp = opendir(path);
     
     if (dp == NULL) {
+        perror("opendir returned NULL");
         return errno;
     }
     else {
