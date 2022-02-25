@@ -10,6 +10,4 @@ copy:
 	gcc ./src/copy_dir.c -o ./bin/copy_dir
 
 clean:
-	rm ./bin/read_dir
-	rm ./bin/read_file
-	rm ./bin/copy_dir
+	rm ./bin/*
