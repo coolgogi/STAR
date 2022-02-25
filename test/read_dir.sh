@@ -1,6 +1,6 @@
 echo "test read_dir.c"
 
-output=`../bin/read_dir ./output/dir1/`
+output=`../bin/read_dir ./input/dir1/`
 answer=`cat ./output/dir_answer.txt`
 
 if [ "$output" = "$answer" ]; then
