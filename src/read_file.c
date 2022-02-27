@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 int
 ReadByteAndPrintHexa (FILE * file) {
@@ -25,6 +26,12 @@ main (int argc, char * argv[]) {
 
     FILE * fp;
     fp = fopen(argv[1], "r");
+
+    if (fp == NULL) {
+        perror("fopen error");
+        return errno;
+    }
+    
     ReadByteAndPrintHexa(fp);
     fclose(fp);
 
