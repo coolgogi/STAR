@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <string.h>
 
+
 int
 copy_dir (char * old_path, char * new_path, int type) {
 
@@ -18,7 +19,6 @@ copy_dir (char * old_path, char * new_path, int type) {
             return errno;
         }
 
-        return 0;
     }
     else if (type == DT_REG) {
         FILE * old_fp ;
@@ -47,8 +47,8 @@ copy_dir (char * old_path, char * new_path, int type) {
         fclose(old_fp);
         fclose(new_fp);
 
-        return 0;
     }
+
     return 0;
 }
 
@@ -59,6 +59,7 @@ read_dir (char * old_path, char * new_path) {
     DIR * old_dir;
     
     struct dirent * dir_dirent;
+    int err;
 
     old_dir = opendir(old_path);
 
@@ -67,7 +68,7 @@ read_dir (char * old_path, char * new_path) {
         return errno;
     }
     
-    while (dir_dirent = readdir(old_dir)) {
+    while ((dir_dirent = readdir(old_dir))) {
 
         if (strcmp(dir_dirent->d_name, ".") == 0) {
             continue;
@@ -90,13 +91,23 @@ read_dir (char * old_path, char * new_path) {
             if (dir_dirent->d_type == DT_DIR) {
                 strcat(old_child_path, "/");
                 strcat(new_child_path, "/");
-                copy_dir(old_child_path, new_child_path, DT_DIR);
-                read_dir(old_child_path, new_child_path);
+                err = copy_dir(old_child_path, new_child_path, DT_DIR);
+                if (err != 0) {
+                    return err;
+                }
+
+                err = read_dir(old_child_path, new_child_path);
+                if (err != 0) {
+                    return err;
+                }
 
             }
             else if (dir_dirent->d_type == DT_REG) {
 
-                copy_dir(old_child_path, new_child_path, DT_REG);
+                err = copy_dir(old_child_path, new_child_path, DT_REG);
+                if (err != 0) {
+                    return err;
+                }
 
             }
 
@@ -118,7 +129,9 @@ main (int argc, char * argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    read_dir (argv[1], argv[2]) ;
+    if (read_dir (argv[1], argv[2]) != 0) {
+        exit(EXIT_FAILURE);
+    }
         
 	return 0;
 }   
