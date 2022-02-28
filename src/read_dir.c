@@ -20,7 +20,7 @@ read_dir (char * path) {
     }
     else {
 
-        while (dir_info = readdir(dir)) {
+        while ((dir_info = readdir(dir))) {
 
             if (strcmp(dir_info->d_name, ".") == 0) {
                 continue;
@@ -57,11 +57,8 @@ main (int argc, char * argv[]) {
     
     if (argc != 2) {
         fprintf(stderr, "invalid input");
-        return 0;
+        return errno;
     }
 
-    read_dir(argv[1]);
-    
-    return 0;
-
+    return read_dir(argv[1]);
 }

@@ -22,6 +22,7 @@ int
 main (int argc, char * argv[]) {
     if (argc != 2) {
         printf("invalid argument\n");
+        exit(EXIT_FAILURE);
     }
 
     FILE * fp;
@@ -31,7 +32,7 @@ main (int argc, char * argv[]) {
         perror("fopen error");
         return errno;
     }
-    
+
     ReadByteAndPrintHexa(fp);
     fclose(fp);
 
