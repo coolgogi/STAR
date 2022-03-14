@@ -1,6 +1,8 @@
 echo "extract function test"
 
-output=`../bin/star extract input/extract_input`
+../bin/star extract input/extract_input
+
+output=`cat star_extract/*`
 answer=`cat output/extract_answer`
 
 if [ "$answer" = "$output" ] ; then
