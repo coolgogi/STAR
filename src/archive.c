@@ -41,15 +41,15 @@ archive (char * archive_file_name, char * target_directory_path) {
 			}	
 			*/
 			
-			char * strlen_child_file = (char *) malloc (4);
-			memset(strlen_child_file, 0, 4);
-			sprintf(strlen_child_file, "%zu", strlen(child_path));
+			char * strlen_child_path = (char *) malloc (4);
+			memset(strlen_child_path, 0, 4);
+			sprintf(strlen_child_path, "%zu", strlen(child_path));
 			char * size_child_file = (char *) malloc (4);
 			memset(size_child_file, 0, 4);
 			sprintf(size_child_file, "%zu", st.st_size);
 
 			FILE * archive_file_fp = fopen(archive_file_name, "a+");
-			fwrite(strlen_child_file, 1, 4, archive_file_fp);
+			fwrite(strlen_child_path, 1, 4, archive_file_fp);
 			fwrite(child_path, 1, strlen(child_path), archive_file_fp);
 			fwrite(size_child_file, 1, 4, archive_file_fp);
 			
@@ -63,7 +63,7 @@ archive (char * archive_file_name, char * target_directory_path) {
 			fclose(read_file_fp);
 			fclose(archive_file_fp);
 			free(size_child_file);	
-			free(strlen_child_file);
+			free(strlen_child_path);
 
 		}
 
