@@ -35,12 +35,6 @@ archive (char * archive_file_name, char * target_directory_path) {
 			struct stat st ;
 			stat(child_path, &st);
 			
-			/*
-			if (st.st_mode != S_IFREG) {
-				continue;
-			}	
-			*/
-			
 			char * strlen_child_path = (char *) malloc (4);
 			memset(strlen_child_path, 0, 4);
 			sprintf(strlen_child_path, "%zu", strlen(child_path));
