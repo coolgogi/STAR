@@ -6,10 +6,9 @@ list (char * archive_file_name) {
 	
 	FILE * file_read_pointer = fopen(archive_file_name, "r");
 	
-
-	while (feof(file_read_pointer) == 0) {
-		unsigned char file_length[4];
-		fread(file_length, 1, 4, file_read_pointer);
+	
+	unsigned char file_length[4];
+	while (fread(file_length, 1, 4, file_read_pointer) == 4) {
 
 		int n = atoi(file_length);
 		char * file_path = (char *) malloc (n);
