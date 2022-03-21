@@ -11,3 +11,6 @@ if [ "$answer" = "$output" ] ; then
 else
 	echo "wrong result"
 fi
+
+cat output/archive_output
+echo ""

@@ -1,7 +1,7 @@
 echo "list function test"
 
 
-output=`../bin/star list input/list_input`
+output=`../bin/star list output/archive_output`
 answer=`cat output/list_answer`
 
 if [ "$answer" = "$output" ] ; then
@@ -9,3 +9,5 @@ if [ "$answer" = "$output" ] ; then
 else
 	echo "wrong result"
 fi
+
+echo "$output"

@@ -4,34 +4,32 @@
 int
 list (char * archive_file_name) {
 	
-	FILE * file_read_pointer = fopen(archive_file_name, "r");
+	FILE * file_read_pointer = fopen(archive_file_name, "r") ;	
+	unsigned int * file_length_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
+	unsigned int * file_size_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
+
+	while (fread(file_length_ptr, 1, 4, file_read_pointer) == 4) {
 	
-	
-	unsigned char file_length[4];
-	while (fread(file_length, 1, 4, file_read_pointer) == 4) {
-
-		int n = atoi(file_length);
-		char * file_path = (char *) malloc (n);
-		fread(file_path, 1, n, file_read_pointer);
-		file_path[n] = '\0';
+		unsigned int file_length = *file_length_ptr ;
+		char * file_path = (char *) malloc (file_length) ;
+		fread(file_path, 1, file_length, file_read_pointer) ;
+		file_path[file_length] = '\0' ;
 		
-		for (int i = 0 ; i < n ; i ++) {
-			putchar(file_path[i]);
-		}
-		putchar('\n');
+		printf("%s\n", file_path) ;
 
-		unsigned char file_data_length[4];
-		fread(file_data_length, 1, 4, file_read_pointer);
-		
-		int m = atoi(file_data_length);
-		char * file_data = (char *) malloc (m);
-		fread(file_data, 1, m, file_read_pointer);
-		file_data[m] = '\0';
+		fread(file_size_ptr, 1, 4, file_read_pointer) ;
 
-		free(file_data);
-		free(file_path);
+		unsigned int file_size = *file_size_ptr ;		
+		char * file_data = (char *) malloc (file_size) ;
+		fread(file_data, 1, file_size, file_read_pointer) ;
+		file_data[file_size] = '\0' ;
+
+		free(file_data) ;
+		free(file_path) ;
 	}
-	
+
+	free(file_size_ptr);
+	free(file_length_ptr);
 	fclose(file_read_pointer);
 
 	return 0;

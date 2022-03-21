@@ -19,35 +19,36 @@ extract (char * archive_file_name) {
 	}
 	int i = 0;
 
-	unsigned char file_length[4];
-	while (fread(file_length, 1, 4, fp) == 4)
+	unsigned int * file_length_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
+	unsigned int * file_data_length_ptr = (unsigned int *) malloc (sizeof(unsigned int));
+	while (fread(file_length_ptr, 1, 4, fp) == 4)
 	{
 
-		int n = atoi(file_length);
-		unsigned char * file_path = (unsigned char *) malloc (n);
-		fread(file_path, 1, n, fp);
-		file_path[n] = '\0';
+		unsigned int file_length = * file_length_ptr ;
+		unsigned char * file_path = (unsigned char *) malloc (file_length);
+		fread(file_path, 1, file_length, fp);
+		file_path[file_length] = '\0';
 		
-		unsigned char file_data_length[4];
-		fread(file_data_length, 1, 4, fp);
-		
-		int m = atoi(file_data_length);
-		char * file_data = (unsigned char *) malloc (m);
-		fread(file_data, 1, m, fp);
-		file_data[m] = '\0';
+
+		fread(file_data_length_ptr, 1, 4, fp);
+		unsigned int file_data_length = * file_data_length_ptr ;
+		unsigned char * file_data = (unsigned char *) malloc (file_data_length);
+		fread(file_data, 1, file_data_length, fp);
+		file_data[file_data_length] = '\0';
 				
-		unsigned char * new_file = (unsigned char *) malloc (n + 13);
-		strcpy(new_file, "star_extract/");
+		unsigned char * new_file = (unsigned char *) malloc (file_length + 13);
 		sprintf(new_file, "star_extract/%d", i); 
 		i++;
-		FILE * new_fp = fopen(new_file, "w");
+		FILE * new_fp = fopen(new_file, "w+");
 		
-		fwrite(file_data, 1, m, new_fp);
+		fwrite(file_data, 1, file_data_length, new_fp);
 		
-		free(new_file);
 		fclose(new_fp);
+		free(new_file);
 		free(file_data);
 		free(file_path);	
 	}
+	free(file_data_length_ptr);
+	free(file_length_ptr);
 	return 0;
 }

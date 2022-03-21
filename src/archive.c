@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <string.h>
+#include "../include/star.h"
 
 int
 archive (char * archive_file_name, char * target_directory_path) {
@@ -35,29 +36,26 @@ archive (char * archive_file_name, char * target_directory_path) {
 			struct stat st ;
 			stat(child_path, &st);
 			
-			char * strlen_child_path = (char *) malloc (4);
-			memset(strlen_child_path, 0, 4);
-			sprintf(strlen_child_path, "%zu", strlen(child_path));
-			char * size_child_file = (char *) malloc (4);
-			memset(size_child_file, 0, 4);
-			sprintf(size_child_file, "%zu", st.st_size);
+			unsigned int strlen_path = strlen(child_path) ;
+			unsigned int * strlen_child_path = &strlen_path ;
+			
+			unsigned int file_size = st.st_size;
+			unsigned int * size_child_file = &file_size ;
 
-			FILE * archive_file_fp = fopen(archive_file_name, "a+");
-			fwrite(strlen_child_path, 1, 4, archive_file_fp);
-			fwrite(child_path, 1, strlen(child_path), archive_file_fp);
-			fwrite(size_child_file, 1, 4, archive_file_fp);
-			
+			FILE * archive_file_fp = fopen(archive_file_name, "ab+");
+			fwrite(strlen_child_path, 1, sizeof(unsigned int), archive_file_fp);
+			fwrite(child_path, 1, strlen_path, archive_file_fp);
+			fwrite(size_child_file, 1, sizeof(unsigned int), archive_file_fp);
+
 			FILE * read_file_fp = fopen(child_path, "r");
-			unsigned char buf;
+			unsigned char buf[file_size];
 			
-			while (fread(&buf, 1, 1, read_file_fp) == 1) {
-				fwrite(&buf, 1, 1, archive_file_fp);
+			if (fread(&buf, 1, file_size, read_file_fp) > 0) {
+				fwrite(&buf, 1, file_size, archive_file_fp);
 			}
 			
 			fclose(read_file_fp);
 			fclose(archive_file_fp);
-			free(size_child_file);	
-			free(strlen_child_path);
 
 		}
 
