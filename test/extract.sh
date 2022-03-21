@@ -2,11 +2,14 @@ echo "extract function test"
 
 ../bin/star extract output/archive_output
 
-output=`cat star_extract/*`
-answer=`cat output/extract_answer`
+wc -c  star_extract/2
+wc -c ../src/main.c
 
-if [ "$answer" = "$output" ] ; then
-	echo "correct result"
-else
-	echo "wrong result"
-fi
+wc -c star_extract/5
+wc -c ../src/list.c
+
+wc -c star_extract/9
+wc -c ../src/archive.c
+
+wc -c star_extract/10
+wc -c ../src/extract.c
