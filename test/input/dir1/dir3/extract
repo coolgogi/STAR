@@ -17,7 +17,7 @@ extract (char * archive_file_name) {
 			return errno;
 		}	
 	}
-	int i = 0;
+	int index = 0;
 
 	unsigned int * file_length_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
 	unsigned int * file_data_length_ptr = (unsigned int *) malloc (sizeof(unsigned int));
@@ -27,25 +27,28 @@ extract (char * archive_file_name) {
 		unsigned int file_length = * file_length_ptr ;
 		unsigned char * file_path = (unsigned char *) malloc (file_length);
 		fread(file_path, 1, file_length, fp);
-		file_path[file_length] = '\0';
 		
-
+		unsigned char * new_file = (unsigned char *) malloc (file_length + 13);
+		sprintf(new_file, "star_extract/%d", index); 
+		index++;
+		FILE * new_fp = fopen(new_file, "w+");
+	
 		fread(file_data_length_ptr, 1, sizeof(unsigned int), fp);
 		unsigned int file_data_length = * file_data_length_ptr ;
-		unsigned char * file_data = (unsigned char *) malloc (file_data_length);
-		fread(file_data, 1, file_data_length, fp);
-		file_data[file_data_length] = '\0';
-				
-		unsigned char * new_file = (unsigned char *) malloc (file_length + 13);
-		sprintf(new_file, "star_extract/%d", i); 
-		i++;
-		FILE * new_fp = fopen(new_file, "w+");
+	
+		unsigned char file_data[512] ;
+		int n = file_data_length / 512 ;
+		int m = file_data_length % 512 ;
+		for (int i = 0 ; i < n ; i ++) {
+			fread(file_data, 1, 512, fp) ;
+			fwrite(file_data, 1, 512, new_fp) ;
+		}
+		fread(file_data, 1, m, fp) ;
+		fwrite(file_data, 1, m, new_fp) ;
 		
-		fwrite(file_data, 1, file_data_length, new_fp);
 		
 		fclose(new_fp);
 		free(new_file);
-		free(file_data);
 		free(file_path);	
 	}
 	free(file_data_length_ptr);
