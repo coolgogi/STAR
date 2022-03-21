@@ -14,8 +14,12 @@ list (char * archive_file_name) {
 		char * file_path = (char *) malloc (n);
 		fread(file_path, 1, n, file_read_pointer);
 		file_path[n] = '\0';
-		printf("%s\n", file_path);
 		
+		for (int i = 0 ; i < n ; i ++) {
+			putchar(file_path[i]);
+		}
+		putchar('\n');
+
 		unsigned char file_data_length[4];
 		fread(file_data_length, 1, 4, file_read_pointer);
 		
