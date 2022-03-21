@@ -8,7 +8,7 @@ list (char * archive_file_name) {
 	unsigned int * file_length_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
 	unsigned int * file_size_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
 
-	while (fread(file_length_ptr, 1, 4, file_read_pointer) == 4) {
+	while (fread(file_length_ptr, 1, sizeof(unsigned int), file_read_pointer) == 4) {
 	
 		unsigned int file_length = *file_length_ptr ;
 		char * file_path = (char *) malloc (file_length) ;
@@ -17,7 +17,7 @@ list (char * archive_file_name) {
 		
 		printf("%s\n", file_path) ;
 
-		fread(file_size_ptr, 1, 4, file_read_pointer) ;
+		fread(file_size_ptr, 1, sizeof(unsigned int), file_read_pointer) ;
 
 		unsigned int file_size = *file_size_ptr ;		
 		char * file_data = (char *) malloc (file_size) ;

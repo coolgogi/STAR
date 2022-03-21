@@ -21,7 +21,7 @@ extract (char * archive_file_name) {
 
 	unsigned int * file_length_ptr = (unsigned int *) malloc (sizeof(unsigned int)) ;
 	unsigned int * file_data_length_ptr = (unsigned int *) malloc (sizeof(unsigned int));
-	while (fread(file_length_ptr, 1, 4, fp) == 4)
+	while (fread(file_length_ptr, 1, sizeof(unsigned int), fp) == 4)
 	{
 
 		unsigned int file_length = * file_length_ptr ;
@@ -30,7 +30,7 @@ extract (char * archive_file_name) {
 		file_path[file_length] = '\0';
 		
 
-		fread(file_data_length_ptr, 1, 4, fp);
+		fread(file_data_length_ptr, 1, sizeof(unsigned int), fp);
 		unsigned int file_data_length = * file_data_length_ptr ;
 		unsigned char * file_data = (unsigned char *) malloc (file_data_length);
 		fread(file_data, 1, file_data_length, fp);

@@ -9,5 +9,3 @@ if [ "$answer" = "$output" ] ; then
 else
 	echo "wrong result"
 fi
-
-echo "$output"
